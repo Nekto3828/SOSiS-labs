@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  flask-hello:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask-hello-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

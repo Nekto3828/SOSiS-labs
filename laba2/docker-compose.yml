@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  # Development service with hot-reload
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: python-time-app-dev
+    environment:
+      TIME_SLEEP: 5
+      USE_TIMESTAMP: false
+    volumes:
+      # Bind mount for live code updates
+      - ./main.py:/app/main.py:ro
+    networks:
+      - app-network
+    restart: unless-stopped
+    profiles:
+      - dev
+
+  # Production service
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      # Optional: use BuildKit for better caching
+      # args:
+      #   BUILDKIT_INLINE_CACHE: 1
+    container_name: python-time-app-prod
+    environment:
+      TIME_SLEEP: 5
+      USE_TIMESTAMP: false
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    profiles:
+      - prod
+
+networks:
+  app-network:
+    driver: bridge
