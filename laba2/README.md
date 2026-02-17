@@ -16,17 +16,32 @@
 - docker system prune -a
 
 
+
+
+
+# timeapp это имя контейнера, ставьте свое
+
+
+
+
+# Создание контейнера:
+
+- docker build -t timeapp:latest --target production .
+
+P.S. точка там и должна быть
+
+
 # Запуск:
 
 Флаг --rm автоматически удалит контейнер,если тот остановится
 
 
-- docker run -d --rm <название образа>
+- docker run -d --rm timeapp
 
 # проверка логов:
 
 
-- docker logs <id контейнера>
+- docker logs timeapp
 
 # для получения id контецнера, используйте команду
 
@@ -42,4 +57,4 @@
 Для передачи значения использовать ENV переменную с названием TIME_SLEEP;
 Для передачи значения переменной при запуске контейнера воспользоваться командой:
 
-- docker run -d --rm --env TIME_SLEEP=10 <название образа>
+- docker run -d --rm --env TIME_SLEEP=10 timeapp
