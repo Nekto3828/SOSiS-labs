@@ -55,3 +55,4 @@ USER appuser
 
 # Run application with unbuffered output
 CMD ["python3", "-u", "main.py"]
+
