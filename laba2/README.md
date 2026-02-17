@@ -16,6 +16,9 @@
 - docker system prune -a
 
 
+# timeapp это имя контейнера, ставьте свое
+
+
 # Создание контейнера:
 
 - docker build -t timeapp:latest --target production .
