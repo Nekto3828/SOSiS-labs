@@ -16,6 +16,13 @@
 - docker system prune -a
 
 
+# Создание контейнера:
+
+- docker build -t timeapp:latest --target production .
+
+P.S. точка там и должна быть
+
+
 # Запуск:
 
 Флаг --rm автоматически удалит контейнер,если тот остановится
