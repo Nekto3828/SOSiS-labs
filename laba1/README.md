@@ -11,7 +11,8 @@
 или
   
 - docker build -t pogoda:latest .
--docker run -p 8080:8080 pogoda:latest
+
+- docker run -p 8080:8080 pogoda:latest
 
 
 после чего перейти по ссылке 
