@@ -63,7 +63,7 @@ def home():
     if 'error' in weather:
         return f"""
         <html>
-            <head><title>Погода в Зеленограде</title></head>
+            <head><title>Капец холодно в Зеленограде</title></head>
             <body style="font-family: Arial; text-align: center; margin-top: 50px;">
                 <h1>🌡️ Ошибка получения данных</h1>
                 <p>{weather['error']}</p>
@@ -74,9 +74,9 @@ def home():
     
     return f"""
     <html>
-        <head><title>Погода в Зеленограде</title></head>
+        <head><title>\Капец холодно в Зеленограде</title></head>
         <body style="font-family: Arial; text-align: center; margin-top: 50px;">
-            <h1>🌡️ Текущая погода в Зеленограде</h1>
+            <h1>🧿 Текущая погода в МИЭТе 🧿</h1>
             <div style="font-size: 72px; margin: 30px;">
                 {weather['temp']}°C
             </div>
