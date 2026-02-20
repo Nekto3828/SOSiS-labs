@@ -1,4 +1,4 @@
-# sosis-lab2
+то# sosis-lab2
 
 
 # перед выполнением прописать:
@@ -59,5 +59,7 @@ P.S. точка там и должна быть
 
 - docker run -d --rm --env TIME_SLEEP=10 timeapp
 
+Для отображения времени в формате timestamp(оноже линукс время, которое в секундах считается от ~1970 года:
 
+- docker run -d --rm --env TIME_SLEEP=10 --env TIMESTAMP=true timeapp
 
