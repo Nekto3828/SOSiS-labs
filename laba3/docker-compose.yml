@@ -7,9 +7,9 @@ services:
     restart: always
     ports:
       - "9090:9090"                 # веб-интерфейс Prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml   # конфиг (обязательно создай файл)
-      - prometheus_data:/prometheus  # volume для данных (опционально)
+    #volumes:
+     # - ./prometheus.yml:/etc/prometheus/prometheus.yml   # конфиг (обязательно создай файл)
+      #- prometheus_data:/prometheus  # volume для данных (опционально)
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
