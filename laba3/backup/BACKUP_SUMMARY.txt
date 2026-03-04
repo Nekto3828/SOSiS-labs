@@ -1,0 +1,76 @@
+BACKUP SUMMARY - 2026-03-05_00-16-01
+=====================================
+
+BACKUP CONTENTS:
+================
+
+1. Prometheus Data Backup:
+   - File: prometheus_data_2026-03-05_00-16-01.tar.gz
+   - Size: 38.29 KB
+   - Contains: All TSDB metrics, configuration, and time-series data
+   - Location: /prometheus (inside container)
+
+2. Grafana Data Backup:
+   - File: grafana_data_2026-03-05_00-16-01.tar.gz
+   - Size: 43,238.58 KB (~42 MB)
+   - Contains: Dashboards, datasources, users, alerts, and configurations
+   - Location: /var/lib/grafana (inside container)
+
+BACKUP LOCATION:
+================
+./backup/
+
+BACKUP METHOD:
+==============
+- Used docker exec to create tar.gz archives
+- Preserved directory structure and permissions
+- Created from running containers with live data
+
+SERVICES STATUS:
+================
+Prometheus:
+  - Container: Running
+  - Port: 9090
+  - Volume: prometheus_data
+  - Health: Active
+
+Grafana:
+  - Container: Running
+  - Port: 3000
+  - Volume: grafana_data
+  - Health: Active
+  - Default Credentials: admin / admin
+
+RESTORATION OPTIONS:
+====================
+
+Quick Restore (Recommended):
+  1. Stop services: docker-compose down
+  2. Remove volumes: docker volume rm prometheus_data grafana_data
+  3. Extract to volumes using docker run (see RESTORE_GUIDE.md)
+  4. Restart: docker-compose up -d
+
+For detailed restore instructions, see: RESTORE_GUIDE.md
+
+NEXT STEPS:
+===========
+1. Verify backup files are present
+2. Test restore in a test environment
+3. Store backups securely
+4. Set up automated backup schedule (scripts provided: backup_grafana_prometheus.ps1 / .sh)
+
+FILES CREATED:
+==============
+- prometheus_data_2026-03-05_00-16-01.tar.gz
+- grafana_data_2026-03-05_00-16-01.tar.gz
+- RESTORE_GUIDE.md
+- BACKUP_SUMMARY.txt (this file)
+
+VERIFICATION:
+=============
+All backup files successfully created at $(Get-Date).
+
+For verification, run:
+  Get-ChildItem -Path ./backup -Recurse -File
+
+Contact: See RESTORE_GUIDE.md for troubleshooting
