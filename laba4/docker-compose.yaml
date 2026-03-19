@@ -1,0 +1,86 @@
+version: '3.9'
+
+services:
+  # MongoDB сервер
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    networks:
+      - mongodb-network
+    ports:
+      - "27017:27017"  # проброс для локального доступа к MongoDB
+    command: mongod --bind_ip 0.0.0.0
+    volumes:
+      - mongodb_data:/data/db
+
+  # MongoDB Exporter для сбора метрик
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter:latest
+    container_name: mongodb-exporter
+    restart: always
+    networks:
+      - mongodb-network
+      - prometheus-network
+    ports:
+      - "9216:9216"  # проброс для локального доступа к метрикам
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+    command:
+      - --mongodb.uri=mongodb://mongodb:27017
+      - --web.listen-address=0.0.0.0:9216
+    depends_on:
+      - mongodb
+
+  # Prometheus для сбора и хранения метрик
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    networks:
+      - prometheus-network
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.listen-address=0.0.0.0:9090
+      - --storage.tsdb.path=/prometheus
+    depends_on:
+      - mongodb-exporter
+
+  # Grafana для визуализации метрик
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    networks:
+      - prometheus-network
+    ports:
+      - "8080:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin1234
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+# Сети
+networks:
+  mongodb-network:
+    name: mongodb-network
+    driver: bridge
+  prometheus-network:
+    name: prometheus-network
+    driver: bridge
+
+# Тома для сохранения данных
+volumes:
+  mongodb_data:
+  prometheus_data:
+  grafana_data:

@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Джоба для сбора метрик самого Prometheus
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Джоба для сбора метрик MongoDB
+  - job_name: 'mongodb'
+    scrape_interval: 10s
+    metrics_path: /metrics
+    static_configs:
+      # Используем имя сервиса из docker-compose
+      - targets: ['mongodb-exporter:9216']
+        labels:
+          service: 'mongodb'
